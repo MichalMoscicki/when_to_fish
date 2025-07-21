@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    user: postgres
+    environment:
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  eureka:
+    image: java-naming-server
+    depends_on:
+      - db
+    ports:
+      - "8761:8761"
+      
+  rabbitmq:
+    image: rabbitmq:3-management 
+    depends_on:
+      - db
+    ports:
+      - "5672:5672"   
+      - "15672:15672"      
+
+volumes:
+  pgdata:
