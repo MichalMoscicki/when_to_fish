@@ -1,5 +1,6 @@
 package com.moscicki.user_service.entities.spot;
 
+import com.moscicki.user_service.dto.spot.SpotType;
 import com.moscicki.user_service.entities.BaseEntity;
 import com.moscicki.user_service.entities.user.User;
 import jakarta.persistence.ManyToOne;
@@ -47,4 +48,6 @@ public abstract class Spot extends BaseEntity {
     public void setLat(BigDecimal lat) {
         this.lat = lat;
     }
+
+    public abstract String getSpotType();
 }

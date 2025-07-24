@@ -1,5 +1,6 @@
 package com.moscicki.user_service.entities.spot;
 
+import com.moscicki.user_service.dto.spot.SpotType;
 import jakarta.persistence.Entity;
 
 @Entity
@@ -40,5 +41,10 @@ public class RiverSpot extends Spot {
 
     public void setMaxOptimalWaterLevel(Integer maxOptimalWaterLevel) {
         this.maxOptimalWaterLevel = maxOptimalWaterLevel;
+    }
+
+    @Override
+    public String getSpotType() {
+        return SpotType.RIVER_SPOT;
     }
 }

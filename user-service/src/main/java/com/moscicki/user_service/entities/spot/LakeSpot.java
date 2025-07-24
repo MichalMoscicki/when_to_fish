@@ -1,5 +1,6 @@
 package com.moscicki.user_service.entities.spot;
 
+import com.moscicki.user_service.dto.spot.SpotType;
 import com.moscicki.user_service.entities.user.User;
 import jakarta.persistence.Entity;
 
@@ -23,5 +24,10 @@ public class LakeSpot extends Spot {
 
     public void setLakeName(String lakeName) {
         this.lakeName = lakeName;
+    }
+
+    @Override
+    public String getSpotType() {
+        return SpotType.LAKE_SPOT;
     }
 }

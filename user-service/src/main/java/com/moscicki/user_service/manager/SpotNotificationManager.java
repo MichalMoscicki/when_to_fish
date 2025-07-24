@@ -2,7 +2,9 @@ package com.moscicki.user_service.manager;
 
 import com.moscicki.user_service.config.RabbitMQConfig;
 import com.moscicki.user_service.dto.notification.OrderNotificationDTO;
+import com.moscicki.user_service.dto.spot.SpotType;
 import com.moscicki.user_service.entities.notification.SpotNotificationDefinition;
+import com.moscicki.user_service.entities.spot.Spot;
 import com.moscicki.user_service.repository.SpotNotificationDefinitionRepository;
 import com.moscicki.user_service.repository.spot.SpotRepository;
 import com.moscicki.user_service.translator.SpotTranslator;
@@ -31,7 +33,11 @@ public class SpotNotificationManager {
         List<SpotNotificationDefinition> spotNotificationDefinitions = spotNotificationDefinitionRepository.findAllByExecutionHourAndDayOfWeek(hour, dayOfWeek);
         for (SpotNotificationDefinition spotNotificationDefinition : spotNotificationDefinitions) {
             Optional<OrderNotificationDTO> orderNotificationDTOOptional = createPayload(spotNotificationDefinition);
+            System.out.println("sending to queue");
             orderNotificationDTOOptional.ifPresent(this::sendToQueue);
+            orderNotificationDTOOptional.ifPresent( s -> {
+                System.out.println("senfing-to-queue");
+            });
             //todo add logging where optional is empty
         }
     }
@@ -46,7 +52,9 @@ public class SpotNotificationManager {
 
     private Optional<OrderNotificationDTO> createPayload(SpotNotificationDefinition def) {
         return spotRepository.findById(def.getSpotId())
-                .map(spot -> new OrderNotificationDTO(def.getType().toString(), SpotTranslator.translate(spot)));
+                .map(spot -> new OrderNotificationDTO(String.valueOf(def.getType()), spot.getUser().getId(), spot.getId(), String.valueOf(spot.getLon()), String.valueOf(spot.getLat()), spot.getSpotType()));
     }
+
+
 
 }

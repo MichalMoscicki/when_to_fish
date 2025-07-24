@@ -30,6 +30,11 @@ services:
     image: user-service:latest
     ports:
       - "8200:8200"
+      
+  prediction-service:
+    image: prediction-service:latest
+    ports:
+      - "8300:8300"
 
 volumes:
   pgdata:

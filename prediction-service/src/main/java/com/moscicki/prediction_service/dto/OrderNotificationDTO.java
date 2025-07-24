@@ -1,5 +1,4 @@
-package com.moscicki.user_service.dto.notification;
-
+package com.moscicki.prediction_service.dto;
 
 public record OrderNotificationDTO(
         String type,

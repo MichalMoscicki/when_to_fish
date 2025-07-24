@@ -13,14 +13,15 @@ import java.util.List;
 public class SpotTranslator {
 
     public static SpotDTO translate(Spot spot) {
-
-        if (spot instanceof RiverSpot) {
-            return new RiverSpotDTO(spot.getId(), UserTranslator.translate(spot.getUser()), SpotType.RIVER_SPOT, spot.getSpotName(), spot.getLon(), spot.getLat(), ((RiverSpot) spot).getMeasurementStationId(), ((RiverSpot) spot).getRiverName(), ((RiverSpot) spot).getMinOptimalWaterLevel(), ((RiverSpot) spot).getMaxOptimalWaterLevel());
+        switch (spot.getSpotType()) {
+            case SpotType.RIVER_SPOT -> {
+                return new RiverSpotDTO(spot.getId(), UserTranslator.translate(spot.getUser()), SpotType.RIVER_SPOT, spot.getSpotName(), spot.getLon(), spot.getLat(), ((RiverSpot) spot).getMeasurementStationId(), ((RiverSpot) spot).getRiverName(), ((RiverSpot) spot).getMinOptimalWaterLevel(), ((RiverSpot) spot).getMaxOptimalWaterLevel());
+            }
+            case SpotType.LAKE_SPOT -> {
+                return new LakeSpotDTO(spot.getId(), UserTranslator.translate(spot.getUser()), SpotType.LAKE_SPOT, spot.getSpotName(), spot.getLon(), spot.getLat(), ((LakeSpot) spot).getLakeName());
+            }
+            default -> {throw new IllegalArgumentException("Unknown spot subclass: " + spot.getClass());}
         }
-        if (spot instanceof LakeSpot) {
-            return new LakeSpotDTO(spot.getId(), UserTranslator.translate(spot.getUser()), SpotType.LAKE_SPOT, spot.getSpotName(), spot.getLon(), spot.getLat(), ((LakeSpot) spot).getLakeName());
-        }
-        throw new IllegalArgumentException("Unknown spot subclass: " + spot.getClass());
     }
 
     public static List<SpotDTO> translateList(List<Spot> spots) {
