@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
-<!--    <Properties></Properties>-->
+<Configuration status="TRACE">
+
+    <Properties>
+        <Property name="basePath">D:/whenToFish/user-service</Property>
+        <Property name="layout">%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n</Property>
+    </Properties>
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${layout}" />
         </Console>
-        <File name="JsonFile" fileName="logs/app-log.json">
-            <JsonLayout
-                    complete="true"
-                    compact="false"
-                    eventEol="true"
-                    includeStacktrace="true"
-                    properties="true"
-                    locationInfo="true"
-                    objectMessageAsJsonObject="true"/>
-        </File>
+        <RollingFile name="debugLog" fileName="${basePath}/logger.log"
+                     filePattern="${basePath}/logger.log">
+            <PatternLayout pattern="${layout}" />
+            <LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
     </Appenders>
 
     <Loggers>
         <Root level="info">
             <AppenderRef ref="Console"/>
+            <AppenderRef ref="debugLog"/>
         </Root>
     </Loggers>
 </Configuration>
